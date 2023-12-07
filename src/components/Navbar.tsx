@@ -1,4 +1,11 @@
-import { AppBar, Toolbar, Typography, Button, Stack } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Container,
+  Stack,
+} from "@mui/material";
 import { Link as RouterLink, Outlet, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -6,26 +13,28 @@ const Navbar = () => {
   return (
     <Stack>
       <AppBar position="static" sx={{ marginBottom: 2, boxShadow: "none" }}>
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            GMO
-          </Typography>
-          <Button color="inherit" component={RouterLink} to="/">
-            Home
-          </Button>
-          <Button color="inherit" component={RouterLink} to="/second-page">
-            Second Page
-          </Button>
-          <Button
-            color="inherit"
-            onClick={() => {
-              localStorage.removeItem("userFormData");
-              navigate("/");
-            }}
-          >
-            Logout
-          </Button>
-        </Toolbar>
+        <Container>
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              GMO
+            </Typography>
+            <Button color="inherit" component={RouterLink} to="/">
+              Home
+            </Button>
+            <Button color="inherit" component={RouterLink} to="/second-page">
+              Second Page
+            </Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                localStorage.removeItem("userFormData");
+                navigate("/");
+              }}
+            >
+              Logout
+            </Button>
+          </Toolbar>
+        </Container>
       </AppBar>
       <Outlet />
     </Stack>

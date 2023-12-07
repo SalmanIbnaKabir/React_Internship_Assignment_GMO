@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import MuiDataGrid from "../components/MuiDataGrid";
@@ -31,14 +31,16 @@ const SecondPage = () => {
   }, [pathname, navigate]);
 
   return (
-    <Stack spacing={2} sx={{ marginBottom: 8 }}>
-      <Stack>
-        <MuiDataGrid />
+    <Container>
+      <Stack spacing={2} sx={{ marginBottom: 8 }}>
+        <Stack>
+          <MuiDataGrid />
+        </Stack>
+        <Stack>
+          <DepartmentList />
+        </Stack>
       </Stack>
-      <Stack>
-        <DepartmentList />
-      </Stack>
-    </Stack>
+    </Container>
   );
 };
 
