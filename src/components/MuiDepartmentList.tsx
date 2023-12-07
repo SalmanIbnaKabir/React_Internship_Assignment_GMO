@@ -29,6 +29,8 @@ const data: Department[] = [
 const DepartmentList: React.FC = () => {
   const [expanded, setExpanded] = useState<string | null>(null);
   const [selected, setSelected] = useState<string[]>([]);
+  // console.log(selected)
+  // console.log(expanded)
 
   const handleToggle = (item: string) => () => {
     const newSelected = [...selected];
