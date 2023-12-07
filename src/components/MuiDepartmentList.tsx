@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   List,
   ListItemButton,
@@ -31,13 +31,67 @@ const DepartmentList: React.FC = () => {
   const [selected, setSelected] = useState<string[]>([]);
 
   const handleToggle = (item: string) => () => {
-    const currentIndex = selected.indexOf(item);
     const newSelected = [...selected];
 
-    if (currentIndex === -1) {
-      newSelected.push(item);
+    // If the clicked item is a department
+    if (data.some((department) => department.department === item)) {
+      const isDepartmentSelected = newSelected.includes(item);
+      const department = data.find((d) => d.department === item);
+
+      if (department) {
+        // Toggle selection of the department
+        if (!isDepartmentSelected) {
+          newSelected.push(item);
+        } else {
+          const departmentIndex = newSelected.indexOf(item);
+          if (departmentIndex !== -1) {
+            newSelected.splice(departmentIndex, 1);
+          }
+        }
+
+        // Toggle selection of all sub-departments
+        department.sub_departments.forEach((subDep) => {
+          const subDepIndex = newSelected.indexOf(subDep);
+          if (!isDepartmentSelected) {
+            // Add sub-department if not already present
+            if (subDepIndex === -1) {
+              newSelected.push(subDep);
+            }
+          } else {
+            // Remove sub-department if present
+            if (subDepIndex !== -1) {
+              newSelected.splice(subDepIndex, 1);
+            }
+          }
+        });
+      }
     } else {
-      newSelected.splice(currentIndex, 1);
+      // If the clicked item is a sub-department
+      const department = data.find(
+        (department) => department.sub_departments.indexOf(item) !== -1
+      );
+
+      if (department) {
+        // Toggle selection of the sub-department
+        const subDepIndex = newSelected.indexOf(item);
+        if (subDepIndex !== -1) {
+          newSelected.splice(subDepIndex, 1);
+        } else {
+          newSelected.push(item);
+        }
+
+        // Check if all sub-departments are selected and toggle selection of the department
+        const allSubDepartmentsSelected = department.sub_departments.every(
+          (subDep) => newSelected.includes(subDep)
+        );
+
+        const departmentIndex = newSelected.indexOf(department.department);
+        if (allSubDepartmentsSelected && departmentIndex === -1) {
+          newSelected.push(department.department);
+        } else if (!allSubDepartmentsSelected && departmentIndex !== -1) {
+          newSelected.splice(departmentIndex, 1);
+        }
+      }
     }
 
     setSelected(newSelected);
@@ -46,6 +100,10 @@ const DepartmentList: React.FC = () => {
   const handleExpand = (item: string) => () => {
     setExpanded((prevExpanded) => (prevExpanded === item ? null : item));
   };
+
+  useEffect(() => {
+    // console.log("Selected items:", selected);
+  }, [selected]);
 
   const isSelected = (item: string) => selected.indexOf(item) !== -1;
 
@@ -68,7 +126,10 @@ const DepartmentList: React.FC = () => {
                   tabIndex={-1}
                   disableRipple
                   inputProps={{ "aria-labelledby": department.department }}
-                  onClick={handleToggle(department.department)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleToggle(department.department)();
+                  }}
                 />
               </ListItemIcon>
               <ListItemText primary={department.department} />
