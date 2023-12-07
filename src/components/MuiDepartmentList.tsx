@@ -136,9 +136,13 @@ const DepartmentList: React.FC = () => {
               </ListItemIcon>
               <ListItemText primary={department.department} />
               {expanded === department.department ? (
-                <span>-</span>
+                <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+                  -
+                </span>
               ) : (
-                <span>+</span>
+                <span style={{ fontWeight: "bold", fontSize: "1.2rem" }}>
+                  +
+                </span>
               )}
             </ListItemButton>
             <Collapse
