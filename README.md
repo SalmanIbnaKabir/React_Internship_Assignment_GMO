@@ -1,4 +1,4 @@
-# (Live Link)[https://splendorous-stardust-7a4180.netlify.app/]
+# [Live Link](https://splendorous-stardust-7a4180.netlify.app/)
 
 ### Start Project
 
